@@ -1,18 +1,5 @@
-STR input
+NUM x 5
 
-GOTO False -GETNUMINPUT
-NUM x 10
-GOTO True -DECREMENT
+NUM y x
 
--GETNUMINPUT
-IN input
-GOTO !<IS_NUM>.input -GETNUMINPUT
-
-NUM x input
-
--DECREMENT
-DEC x
-OUT x
-GOTO [x_GT_0] -DECREMENT
-
-OUT "Done"
+OUT y

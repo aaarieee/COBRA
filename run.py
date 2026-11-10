@@ -32,8 +32,11 @@ curmod = "" # what is being evaluated? "" means main module
 module_fns = {}
 
 # "clear" shell 
-def cls(n): 
-    print("\n" * n) 
+def cls(n):
+    if isinstance(n, int):
+        print("\n" * n)
+    else:
+        print("\n", 25) 
 
 def asplit(index, line): 
     quoted = False 
@@ -51,7 +54,8 @@ def asplit(index, line):
         idx += 1 
     split_line.append(current) 
     if quoted: 
-        raise SyntaxError(str(index) + ': " expected.') 
+        print(str(index) + ': " expected.') 
+        exit()
     return split_line
 
 def is_number(x):
@@ -79,7 +83,7 @@ def is_bool(x):
     return False
 
 # make program understand numeric values (or representative variable names) 
-def resolve_number(index, num): 
+def resolve_number(index, num):
 # handling uninitialized vars 
     if num == None: 
         return None 
@@ -95,13 +99,15 @@ def resolve_number(index, num):
         try: 
             string = num[n_idx+2:] 
         except: 
-            raise SyntaxError(str(index) + f"Attribute {attribute} expected parent but never got one.")
+            print(str(index) + f"Attribute {attribute} expected parent but never got one.")
+            exit()
         match attribute: 
             case "LEN": 
                 return len(resolve_string(index, string)) 
 
             case _:
-                AttributeError(str(index) + f"Invalid attribute {attribute}.") 
+                print(str(index) + f"Invalid attribute {attribute}.") 
+                exit()
 
 # handling invalid number type error 
     try: 
@@ -116,7 +122,8 @@ def resolve_number(index, num):
         if "." in num:
             return resolve_object(index, num)
 
-        raise ValueError(str(index) + f": Invalid value for type Number.")
+        print(str(index) + f": Invalid value for type Number.")
+        exit()
     return int(num) 
 
 # make program understand string values (or representative variable names) 
@@ -163,7 +170,8 @@ def resolve_bool(index, txt)->bool:
         try: 
             string = txt[n_idx+2:]
         except: 
-            raise SyntaxError(str(index) + f"Attribute {attribute} expected parent but never got one.") 
+            print(str(index) + f"Attribute {attribute} expected parent but never got one.")
+            exit() 
 
         match attribute: 
             case "IS_NUM": 
@@ -171,12 +179,14 @@ def resolve_bool(index, txt)->bool:
             case "IS_BOOL":
                 return is_bool(string)
             case _:
-                AttributeError(str(index) + f"Invalid attribute {attribute}.") 
+                print(str(index) + f"Invalid attribute {attribute}.")
+                exit() 
 
     if "." in txt:
         return resolve_object(index, txt)
 
-    raise ValueError(str(index) + f": Invalid value for type Bool.") 
+    print(str(index) + f": Invalid value for type Bool.")
+    exit()
 
 def resolve_object(index, x):
     parent = x[:x.index(".")]
