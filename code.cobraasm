@@ -1,4 +1,18 @@
-TYPE Person STR name NUM age
-Person person1 "John Doe" 0
-IN person1.name "Name: "
-OUT person1.name
+STR input
+
+GOTO False -GETNUMINPUT
+NUM x 10
+GOTO True -DECREMENT
+
+-GETNUMINPUT
+IN input
+GOTO !<IS_NUM>.input -GETNUMINPUT
+
+NUM x input
+
+-DECREMENT
+DEC x
+OUT x
+GOTO [x_GT_0] -DECREMENT
+
+OUT "Done"

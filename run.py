@@ -155,16 +155,13 @@ def resolve_bool(index, txt)->bool:
         args = txt[1:-1].split('_') 
         return compare_raw(index, *args)
 
-    if "." in txt:
-        return resolve_object(index, txt)
-
     if txt[0] == "<": 
         n_idx = 1 
         while n_idx < len(txt) and txt[n_idx] != ">": 
             n_idx += 1 
         attribute = txt[1:n_idx] 
         try: 
-            string = txt[n_idx+2:] 
+            string = txt[n_idx+2:]
         except: 
             raise SyntaxError(str(index) + f"Attribute {attribute} expected parent but never got one.") 
 
@@ -175,6 +172,9 @@ def resolve_bool(index, txt)->bool:
                 return is_bool(string)
             case _:
                 AttributeError(str(index) + f"Invalid attribute {attribute}.") 
+
+    if "." in txt:
+        return resolve_object(index, txt)
 
     raise ValueError(str(index) + f": Invalid value for type Bool.") 
 
@@ -247,6 +247,24 @@ def string_value_of(index, x):
     if x[0] == "[" and x[-1] == "]": 
         args = x[1:-1].split('_') 
         return str(compare_raw(index, *args))
+
+    if x[0] == "<": 
+        n_idx = 1 
+        while n_idx < len(x) and x[n_idx] != ">": 
+            n_idx += 1 
+        attribute = x[1:n_idx] 
+        try: 
+            string = x[n_idx+2:]
+        except: 
+            raise SyntaxError(str(index) + f"Attribute {attribute} expected parent but never got one.") 
+
+        match attribute: 
+            case "IS_NUM": 
+                return is_number(string)
+            case "IS_BOOL":
+                return is_bool(string)
+            case _:
+                AttributeError(str(index) + f"Invalid attribute {attribute}.") 
 
     if "." in x:
         return resolve_object(index, x)
@@ -538,7 +556,7 @@ def set_output(index, *args):
         print() 
         return
     for arg in args: 
-        output.append(string_value_of(index, arg)) 
+        output.append(str(string_value_of(index, arg))) 
 
     print(" ".join(output)) 
 
@@ -704,4 +722,5 @@ with open("code.cobraasm") as f:
     code = f.read().splitlines() 
 
 cls(100) 
+
 run(code)
