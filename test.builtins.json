@@ -1,0 +1,36 @@
+{
+    "cls": {
+        "pass": ["NUM"],
+        "fail": []
+    },
+
+    "asplit": {
+        "pass": ["NUM", "LINE"],
+        "fail": []
+    },
+
+    "is_number": {
+        "pass": ["NUM"],
+        "fail": []
+    },
+
+    "is_bool": {
+        "pass": ["STR"],
+        "fail": []
+    },
+
+    "resolve_number": {
+        "pass": ["NUM", "STR"],
+        "fail": []
+    },
+
+    "resolve_string": {
+        "pass": ["NUM", "STR"],
+        "fail": []
+    },
+
+    "resolve_bool": {
+        "pass": ["NUM", "STR"],
+        "fail": []
+    }
+}
